@@ -38,7 +38,7 @@ class IrcBot
   end
 
   def handle_ping_message(message)
-    hostname = message.split(' ').last
+    hostname = message.split(" ").last
     irc_send "PONG #{hostname}"
   end
 
