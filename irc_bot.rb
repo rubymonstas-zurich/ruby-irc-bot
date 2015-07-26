@@ -15,26 +15,26 @@ def connect
   @socket = TCPSocket.open(@server, @port)
 
   # We send an IRC message that's sets the bot's nickname to @name
-  irc_send "NICK #{@name}"
+  irc_send("NICK #{@name}")
 
   # We send an IRC message that's sets users usename and real name to @name
-  irc_send "USER #{@name} 0 * :#{@name}"
+  irc_send("USER #{@name} 0 * :#{@name}")
 end
 
 # A method that sends a command to join an IRC channel.
 # It takes the channel as a method argument. The channel name must begin with a "#"
 def irc_send_join(channel)
   # We send an IRC message that joins a channel
-  irc_send "JOIN #{channel}"
+  irc_send("JOIN #{channel}")
 end
 
 # A method that sends an IRC-protocol message to the server and also puts it to the terminal
 def irc_send(message)
-  puts "Sending: #{message}"
+  puts("Sending: #{message}")
 
   # We can call "puts" on the socket we opened earlier. Instead of outputting something on the
   # terminal, this will send the message accross the internet to the IRC server we are connected to
-  @socket.puts message
+  @socket.puts(message)
 end
 
 # The server will regularly ask if our bot is still around using "PING" messages. This method allows
@@ -65,12 +65,12 @@ def run
     puts message
 
     # If the message we are getting is a "PING" message...
-    if message.start_with? "PING"
+    if message.start_with?("PING")
       # ...then we need to react to that PING, so as to not get disconnected accidentally.
       handle_ping_message(message)
 
     # If the message is a private message sent inside our channel...
-    elsif message.include? "PRIVMSG #{@channel}"
+    elsif message.include?("PRIVMSG #{@channel}")
       # ...then we react in some way to that message.
       handle_channel_message(message)
 
@@ -83,7 +83,6 @@ def run
     end
   end
 end
-
 
 ###############################################
 # Implement your own ideas below this comment #
