@@ -85,7 +85,7 @@ def run
 end
 
 # The host name of the IRC server we want to connect to
-@server = "irc.freenode.net"
+@server = "irc.libera.chat"
 
 # The port on the server we want to connect to with our bot
 @port = 6667
