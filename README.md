@@ -1,9 +1,9 @@
 # ruby-irc-bot
 A simple IRC bot for educational purposes
 
-The code is deliberatly kept simple, in order to be easy to understand. E.g. we don't use classes or single quotes for strings and we don't omit parentheses (apart from with `puts`) and so on.
+The code is deliberatly kept simple, in order to be easy to understand. E.g. we don't use classes, regexes or single quotes for strings and we don't omit parentheses (apart from with `puts`) and so on.
 
-The bot will connect to `irc.libera.chat` by default. You can join the same server by going to https://web.libera.chat/. Join the `#rubymonstas` channel there to interact with your bot.
+The bot will connect to `irc.libera.chat` by default. You can join the same server by going to https://web.libera.chat/?channel=#rubymonstas. 
 
 This was developed to serve as a project for the participants of [Ruby Monstas Zürich](http://www.rubymonstas.ch).
 
