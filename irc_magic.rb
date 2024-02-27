@@ -30,11 +30,18 @@ end
 
 # A method that sends an IRC-protocol message to the server and also puts it to the terminal
 def irc_send(message)
+  # To be able to see what things we are sending to the server, we are also outputting it to the command line
   puts("Sending: #{message}")
 
   # We can call "puts" on the socket we opened earlier. Instead of outputting something on the
   # terminal, this will send the message accross the internet to the IRC server we are connected to
   @socket.puts(message)
+end
+
+# A method that sends a PRIVMSG message to a recipient (either a channel or a user).
+def send_privmsg(recipient, message)
+  # We put together an IRC protocol message that the server will be able to interpret and hand it to the irc_send method, which sends it to the IRC server.
+  irc_send("PRIVMSG #{recipient} :#{message}")
 end
 
 # The server will regularly ask if our bot is still around using "PING" messages. This method allows
@@ -70,9 +77,28 @@ def run
       handle_ping_message(message)
 
     # If the message is a private message sent inside our channel...
-    elsif message.include?("PRIVMSG #{@channel}")
-      # ...then we react in some way to that message.
-      handle_channel_message(message)
+    elsif message.include?("PRIVMSG")
+      # message is of the form ":nerdinand!~nerdinand@178.197.219.93 PRIVMSG #rubymonstas :hi"
+
+      # We can get the actual chat message out of this message string by splitting it apart at the `:`, this returns an array that looks like this: ["", "nerdinand!~nerdinand@178.197.219.93 PRIVMSG #rubymonstas ", "hi"]
+      message_parts = message.split(":")
+
+      # We take the 3rd up until the last element of this array (-1 means the last element in the array) we join these elements back together into the chat_message.
+      # The joining part is done just in case the user has used a ":" in their message.
+      chat_message = message_parts[2..-1].join(':')
+
+      # We can split the original message again, this time by spaces. The first element of that resulting array looks like this: ":nerdinand!~nerdinand@178.197.219.93"
+      sender_identifier = message.split(' ').first
+      
+      # Then we can split that again by "!" and take the first element minus the first character, which looks like this: "nerdinand"
+      sender = sender_identifier.split('!').first[1..-1]
+
+      # Extracting the recipient out of the message is easy: We can split by spaces again and take the third element, this results in: '#rubymonstas'
+      recipient = message.split(' ')[2]
+
+      # Having collected all of that information, we can now call the handle_privmsg method which is the "meat" of our bot. 
+      # This is the method you can implement in `irc_bot.rb`!
+      handle_privmsg(sender, recipient, chat_message)
 
     # If we haven't joined our channel yet and the message includes "MODE" and the bot's name...
     elsif !@joined && message.include?("MODE #{@name}")
